@@ -44,10 +44,36 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # Get the state of the keyboard keys
+    keys = pygame.key.get_pressed()
+
+    # If the right arrow key is pressed, print "guacamole"
+    if keys[pygame.K_RIGHT] and dir != (0, -1):
+        dir = (0, 1)
+    elif keys[pygame.K_LEFT] and dir != (0, 1):
+        dir = (0, -1)
+    elif keys[pygame.K_UP] and dir != (1, 0):
+        dir = (-1, 0)
+    elif keys[pygame.K_DOWN] and dir != (-1, 0):
+        dir = (1, 0)
+
+    new_dir_xaxis = (dir[0], 0)
+    new_dir_yaxis = (0, dir[0])
+
+    # Make the snake appear from the other side of the screen
+
+    if snake[1][0] > width:
+        print("Stop")
+    if snake[1][1] > height:
+        print("Stop")
+
+        # Draw the snake at the new position
+
     # Update the window display
     pygame.display.flip()
 
-    clock.tick(1)
+
+    clock.tick(3)
 
 # Quit Pygame
 pygame.quit()
