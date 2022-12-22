@@ -16,13 +16,18 @@ screen.fill((255, 255, 255))
 field_size = 20, 14
 block_w = width/field_size[0]
 block_h = height/field_size[1]
-block = (3, 2)
+
+# snake
+snake = [(3, 3), (2, 3), (2, 2), (2, 1)]
 
 # Set the rectangle color to red
 color = (255, 0, 0)
+color_head = (0, 255, 0)
 
-# Draw a rectangle at position (50, 50) with size (100, 50)
-pygame.draw.rect(screen, color, pygame.Rect(block[0]*block_w, block[1]*block_h, block_w, block_h))
+# Draw the snake
+pygame.draw.rect(screen, color_head, pygame.Rect(snake[0][1] * block_h, snake[0][0] * block_w, block_h, block_w))
+for block in snake[1:]:
+    pygame.draw.rect(screen, color, pygame.Rect(block[1] * block_h, block[0] * block_w, block_h, block_w))
 
 # Update the window display
 pygame.display.flip()
