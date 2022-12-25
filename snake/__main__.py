@@ -1,5 +1,6 @@
 import random
 import pygame
+from pygame.locals import *
 
 # Initialize Pygame
 pygame.init()
@@ -13,6 +14,8 @@ screen = pygame.display.set_mode((width, height))
 field_size = 20, 14
 block_w = width // field_size[0]
 block_h = height // field_size[1]
+myfont = pygame.font.SysFont("cochin", 16)
+print(pygame.font.get_fonts())
 
 # snake
 snake = [(3, 3), (2, 3), (2, 2), (2, 1)]
@@ -31,6 +34,10 @@ treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] -
 MOVE_EVENT = pygame.USEREVENT + 1
 pygame.event.post(pygame.event.Event(MOVE_EVENT))
 
+# Set the score
+
+score = 0
+
 # Run the Pygame loop
 running = True
 while running:
@@ -46,7 +53,7 @@ while running:
             if snake[0] == treat:
                 snake.append(snake_end)
                 treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
-                print(treat)
+                score += 1
 
             pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 250)
 
@@ -77,6 +84,9 @@ while running:
                      pygame.Rect(snake[0][0] * block_w, snake[0][1] * block_h, block_w, block_h))
     for block in snake[1:]:
         pygame.draw.rect(screen, color, pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
+
+    scoretext = myfont.render(f"Score: {score}", False, (0, 0, 0))
+    screen.blit(scoretext, (5, 10))
 
     # Update the window display
     pygame.display.flip()
