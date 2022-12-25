@@ -53,10 +53,13 @@ while running:
             # Check if snake ate the treat
             if snake[0] == treat:
                 snake.append(snake_end)
-                treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
                 score += 1
+                while True:
+                    treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+                    if treat not in snake:
+                        break
 
-            # Todo check collision with itself
+            # check collision with itself
             if snake[0] in snake[1:]:
                 dead = True
                 pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 5000)
