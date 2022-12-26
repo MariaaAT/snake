@@ -21,6 +21,9 @@ colour = (0, 255, 117)
 # Create a clock object to slow down the amount of frame rates per second
 clock = pygame.time.Clock()
 
+# Set the direction
+dir = (0, 1)
+
 running = True
 while running:
 
@@ -34,6 +37,22 @@ while running:
     for block in snake[1:]:
         pygame.draw.rect(screen, colour,
                          pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
+
+    # Move the snake
+
+
+
+
+    # Move the snake with arrow keys
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP] and dir != (0, 1):
+        dir = (0, -1)
+    if keys[pygame.K_DOWN] and dir != (0, -1):
+        dir = (0, 1)
+    if keys[pygame.K_RIGHT] and dir != (-1, 0):
+        dir = (1, 0)
+    if keys[pygame.K_UP] and dir != (1, 0):
+        dir = (-1, 0)
 
     pygame.display.flip()  # Update the window display
 
