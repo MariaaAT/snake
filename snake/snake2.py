@@ -24,25 +24,22 @@ clock = pygame.time.Clock()
 # Set the direction
 dir = (0, 1)
 
+# Set a move event
+MOVE_EVENT = pygame.USEREVENT + 1
+pygame.event.post(pygame.event.Event(MOVE_EVENT))
+
+
 running = True
 while running:
 
-    for event in pygame.event.get():
+    for event in pygame.event.get():  # This pulls event from the event database, afterwards there's nomore events in there
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill(background_colour)  # Fill the window with a background colour
-
-    pygame.draw.rect(screen, colour_head, pygame.Rect(snake[0][0] * block_w, snake[0][1] * block_h, block_w, block_h))
-    for block in snake[1:]:
-        pygame.draw.rect(screen, colour,
-                         pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
-
-    # Move the snake
-
-
-
-
+        # Move the snake
+        if event.type == MOVE_EVENT:
+            snake = [((snake[0][0] + dir[0]) % field_size[0], (snake[0][1] + dir[1]) % field_size[1])] + snake[:-1]
+            pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 1000)
     # Move the snake with arrow keys
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] and dir != (0, 1):
@@ -51,8 +48,15 @@ while running:
         dir = (0, 1)
     if keys[pygame.K_RIGHT] and dir != (-1, 0):
         dir = (1, 0)
-    if keys[pygame.K_UP] and dir != (1, 0):
+    if keys[pygame.K_LEFT] and dir != (1, 0):
         dir = (-1, 0)
+
+    screen.fill(background_colour)  # Fill the window with a background colour
+
+    pygame.draw.rect(screen, colour_head, pygame.Rect(snake[0][0] * block_w, snake[0][1] * block_h, block_w, block_h))
+    for block in snake[1:]:
+        pygame.draw.rect(screen, colour,
+                         pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
 
     pygame.display.flip()  # Update the window display
 
