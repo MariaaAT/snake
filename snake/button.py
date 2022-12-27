@@ -11,7 +11,7 @@ class Button():
         self.clicked = False
 
     # Draw the button on the screen
-    def draw(self, surface):
+    def draw(self, surface: pygame.surface.Surface):
         # allow different buttons do different things
         action = False
 
@@ -30,6 +30,6 @@ class Button():
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
-        surface.blit(self.image, self.rect.x, self.rect.y)
+        surface.blit(self.image, (self.rect.x, self.rect.y))  # Make x, y a tuple
 
         return action

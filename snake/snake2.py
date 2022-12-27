@@ -1,5 +1,6 @@
 import pygame
 import random
+import button
 
 # Initialise the game
 pygame.init()
@@ -18,6 +19,14 @@ block_h = height // field_size[1]
 snake = [(3, 3), (3, 2), (3, 1)]
 colour_head = (43, 132, 0)
 colour = (0, 255, 117)
+
+# load button images
+start_img = pygame.image.load("images/play_btn.png").convert_alpha()
+exit_img = pygame.image.load("images/exit_btn.png").convert_alpha()
+
+# create button instances
+start_button = button.Button(5, 7, start_img, 0.8)
+exit_button = button.Button(300, 7, exit_img, 0.8)  # we work with pixel and not with the x, y coordinates
 
 # Create a clock object to slow down the amount of frame rates per second
 clock = pygame.time.Clock()
@@ -38,6 +47,12 @@ dead = False
 
 font_go = pygame.font.SysFont('cochin', 32)
 font_score = pygame.font.SysFont('cochin', 16)
+
+# Create function to write a message
+def write_message(font, message, x, y):
+    text = font.render(message, True, (0, 0, 0))
+    screen.blit(text, (x, y))
+
 score = 0
 
 running = True
@@ -82,14 +97,18 @@ while running:
 
     screen.fill(background_colour)  # Fill the window with a background colour
 
+    # add buttons
+    start_button.draw(screen)
+    exit_button.draw(screen)
+
     # Score text written
-    scoretext = font_score.render(f"Score: {score}", True, (0, 0, 0))
-    screen.blit(scoretext, (5, 10))
+    write_message(font_score, f"Score: {score}", 5, 10)
 
     # GAME OVER! message
     if dead:
-        go_text = font_go.render('GAME OVER!', True, (0, 0, 0))
-        screen.blit(go_text, ((width / 2) - 100, height / 2))
+        write_message(font_go, 'GAME OVER!', (width / 2) - 100, height / 2)
+        #go_text = font_go.render('GAME OVER!', True, (0, 0, 0))
+        #screen.blit(go_text, ((width / 2) - 100, height / 2))
 
     # Treat drawn
     pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
