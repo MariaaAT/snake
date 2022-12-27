@@ -1,10 +1,11 @@
 import pygame.mouse
 
-
 class Button():
     # button instance created
-    def __init__(self, x, y, image):
-        self.image = image
+    def __init__(self, x, y, image, scale):
+        img_w = image.get_width()
+        img_h = image.get_height()
+        self.image = pygame.transform.scale(image, (int(img_w * scale), int(img_h * scale)))
         self.rect = self.image.get_rect()  # get a rectangle from it
         self.rect.topleft = (x, y)
         self.clicked = False
