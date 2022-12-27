@@ -30,7 +30,7 @@ MOVE_EVENT = pygame.USEREVENT + 1
 #pygame.event.post(pygame.event.Event(MOVE_EVENT)) # post makes the event happen inmediately
 pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 1) # The number says how much time passes until the event happens
 
-treat = (random.randint(0, field_size[1]), random.randint(0, field_size[1]))
+treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
 
 running = True
 while running:
@@ -41,6 +41,12 @@ while running:
         # Move the snake
         if event.type == MOVE_EVENT:
             snake = [((snake[0][0] + dir[0]) % field_size[0], (snake[0][1] + dir[1]) % field_size[1])] + snake[:-1]
+
+            end_snake = snake[-1]
+            if treat == snake[0]:
+                snake.append(end_snake)
+                treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+
             pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 500)
 
     # Move the snake with arrow keys
@@ -56,13 +62,13 @@ while running:
 
     screen.fill(background_colour)  # Fill the window with a background colour
 
+    # Draw the treat
+    pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
+
     pygame.draw.rect(screen, colour_head, pygame.Rect(snake[0][0] * block_w, snake[0][1] * block_h, block_w, block_h))
     for block in snake[1:]:
         pygame.draw.rect(screen, colour,
                          pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
-
-    # Draw the treat
-    pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
 
     pygame.display.flip()  # Update the window display
 
