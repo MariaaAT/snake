@@ -30,7 +30,15 @@ MOVE_EVENT = pygame.USEREVENT + 1
 #pygame.event.post(pygame.event.Event(MOVE_EVENT)) # post makes the event happen inmediately
 pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 1) # The number says how much time passes until the event happens
 
+# Set the treat
 treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+
+# Dead variable
+dead = False
+
+font_go = pygame.font.SysFont('cochin', 32)
+font_score = pygame.font.SysFont('cochin', 16)
+score = 0
 
 running = True
 while running:
@@ -39,7 +47,7 @@ while running:
             running = False
 
         # Move the snake
-        if event.type == MOVE_EVENT:
+        if event.type == MOVE_EVENT and not dead:
             snake = [((snake[0][0] + dir[0]) % field_size[0], (snake[0][1] + dir[1]) % field_size[1])] + snake[:-1]
 
             # Append treat to the snake
@@ -47,10 +55,17 @@ while running:
             end_snake = snake[-1]
             if treat == snake[0]:
                 snake.append(end_snake)
+                score += 1
                 while True:
                     treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
                     if treat not in snake:
                         break
+
+            # Check collision
+            if snake[0] in snake[1:]:
+                dead = True
+                pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 1000)
+
 
             pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 500)
 
@@ -67,13 +82,24 @@ while running:
 
     screen.fill(background_colour)  # Fill the window with a background colour
 
-    # Draw the treat
+    # Score text written
+    scoretext = font_score.render(f"Score: {score}", True, (0, 0, 0))
+    screen.blit(scoretext, (5, 10))
+
+    # GAME OVER! message
+    if dead:
+        go_text = font_go.render('GAME OVER!', True, (0, 0, 0))
+        screen.blit(go_text, ((width / 2) - 100, height / 2))
+
+    # Treat drawn
     pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
 
+    # Snake drawn
     pygame.draw.rect(screen, colour_head, pygame.Rect(snake[0][0] * block_w, snake[0][1] * block_h, block_w, block_h))
     for block in snake[1:]:
         pygame.draw.rect(screen, colour,
                          pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
+
 
     pygame.display.flip()  # Update the window display
 
