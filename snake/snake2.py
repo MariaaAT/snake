@@ -42,10 +42,15 @@ while running:
         if event.type == MOVE_EVENT:
             snake = [((snake[0][0] + dir[0]) % field_size[0], (snake[0][1] + dir[1]) % field_size[1])] + snake[:-1]
 
+            # Append treat to the snake
+            # Check if the treat appears for the first time in the snake
             end_snake = snake[-1]
             if treat == snake[0]:
                 snake.append(end_snake)
-                treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+                while True:
+                    treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+                    if treat not in snake:
+                        break
 
             pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 500)
 
