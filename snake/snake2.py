@@ -24,10 +24,6 @@ colour = (0, 255, 117)
 start_img = pygame.image.load("images/play_btn.png").convert_alpha()
 exit_img = pygame.image.load("images/exit_btn.png").convert_alpha()
 
-# create button instances
-start_button = button.Button(5, 7, start_img, 0.8)
-exit_button = button.Button(300, 7, exit_img, 0.8)  # we work with pixel and not with the x, y coordinates
-
 # Create a clock object to slow down the amount of frame rates per second
 clock = pygame.time.Clock()
 
@@ -36,8 +32,8 @@ dir = (0, 1)
 
 # Set a move event
 MOVE_EVENT = pygame.USEREVENT + 1
-#pygame.event.post(pygame.event.Event(MOVE_EVENT)) # post makes the event happen inmediately
-pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 1) # The number says how much time passes until the event happens
+# pygame.event.post(pygame.event.Event(MOVE_EVENT)) # post makes the event happen inmediately
+pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 1)  # The number says how much time passes until the event happens
 
 # Set the treat
 treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
@@ -48,10 +44,12 @@ dead = False
 font_go = pygame.font.SysFont('cochin', 32)
 font_score = pygame.font.SysFont('cochin', 16)
 
+
 # Create function to write a message
 def write_message(font, message, x, y):
     text = font.render(message, True, (0, 0, 0))
     screen.blit(text, (x, y))
+
 
 score = 0
 
@@ -79,8 +77,6 @@ while running:
             # Check collision
             if snake[0] in snake[1:]:
                 dead = True
-                pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 1000)
-
 
             pygame.time.set_timer(pygame.event.Event(MOVE_EVENT), 500)
 
@@ -98,8 +94,8 @@ while running:
     screen.fill(background_colour)  # Fill the window with a background colour
 
     # add buttons
-    start_button.draw(screen)
-    exit_button.draw(screen)
+    #start_button.draw(screen)
+    #exit_button.draw(screen)
 
     # Score text written
     write_message(font_score, f"Score: {score}", 5, 10)
@@ -107,8 +103,21 @@ while running:
     # GAME OVER! message
     if dead:
         write_message(font_go, 'GAME OVER!', (width / 2) - 100, height / 2)
-        #go_text = font_go.render('GAME OVER!', True, (0, 0, 0))
-        #screen.blit(go_text, ((width / 2) - 100, height / 2))
+        # create button instances
+        start_button = button.Button(150, 300, start_img, 0.4)
+        exit_button = button.Button(450, 300, exit_img, 0.4)  # we work with pixels and not with the x, y coordinates
+        if start_button.draw(screen): # You have to restart all the data
+            snake = [(3, 3), (3, 2), (3, 1)]
+            dir = (0, 1)
+            dead = False
+            treat = (random.randint(0, field_size[0] - 1), random.randint(0, field_size[1] - 1))
+            score = 0
+        if exit_button.draw(screen):
+            pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 1000)
+
+        exit_button.draw(screen)
+        # go_text = font_go.render('GAME OVER!', True, (0, 0, 0))
+        # screen.blit(go_text, ((width / 2) - 100, height / 2))
 
     # Treat drawn
     pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
@@ -119,8 +128,6 @@ while running:
         pygame.draw.rect(screen, colour,
                          pygame.Rect(block[0] * block_w, block[1] * block_h, block_w, block_h))
 
-
     pygame.display.flip()  # Update the window display
 
     clock.tick(60)
-
