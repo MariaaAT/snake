@@ -109,12 +109,12 @@ while running:
     if dead:
         write_message(font_go, 'GAME OVER!', (width / 2) - 100, height / 2)
         # create button instances
-        start_button = button.Button(150, 300, start_img, 0.4)
-        exit_button = button.Button(450, 300, exit_img, 0.4)  # we work with pixels and not with the x, y coordinates
+        start_button = button.Button(90, 300, start_img, 0.6)
+        exit_button = button.Button(390, 300, exit_img, 0.6)  # we work with pixels and not with the x, y coordinates
         if start_button.draw(screen): # You have to restart all the data
             reset()
         if exit_button.draw(screen):
-            pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 1000)
+            pygame.time.set_timer(pygame.event.Event(pygame.QUIT), 500)
 
     # Treat drawn
     pygame.draw.rect(screen, colour, pygame.Rect(treat[0] * block_w, treat[1] * block_h, block_w, block_h))
