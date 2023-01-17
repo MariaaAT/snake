@@ -4,7 +4,7 @@
 Who didn't have, back in the 2000s, a Nokia phone and played the famous Snake game? To practice and continue learning Python 
 I recreated this famous game. 
 
-Let your memory fly and start playing!
+Let your memories fly and start playing!
 
 ## Installation
 
