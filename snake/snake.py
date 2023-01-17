@@ -9,6 +9,7 @@ pygame.init()
 # Create window
 width, height = 680, 480
 background_colour = (255, 255, 255)
+pygame.display.set_caption('MariaaAT/snake')
 screen = pygame.display.set_mode((width, height))  # This actually created the window
 
 field_size = 20, 14
